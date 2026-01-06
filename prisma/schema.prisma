@@ -4,49 +4,46 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-// building management application
+// building management system
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  name      String
-  password  String
-  role      Role       @default(USER)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  buildings Building[]
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  buildings     Building[]     @relation("BuildingUser")
+  buildingUsers BuildingUser[]
 }
 
 model Building {
-  id        String  @id @default(cuid())
-  name      String
-  zip       String
-  city      String
-  address   String?
-  residents User[]
-  units     Unit[]
+  id                String         @id @default(uuid())
+  name              String
+  residents         User[]         @relation("BuildingUser")
+  buildingResidents BuildingUser[]
 }
 
-model Unit {
-  id          String   @id @default(cuid())
-  floor       Int
-  number      String
-  building    Building @relation(fields: [building_id], references: [id])
-  building_id String
+model BuildingUser {
+  userId     String
+  buildingId String
+  user       User      @relation(fields: [userId], references: [id])
+  building   Building  @relation(fields: [buildingId], references: [id])
+  role       Role      @default(RESIDENT)
+  joinedAt   DateTime  @default(now())
+  leftAt     DateTime?
+
+  @@unique([userId, buildingId])
 }
 
 enum Role {
   ADMIN
-  MANAGER
-  USER
+  RESIDENT
+  GUEST
 }

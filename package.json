@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "webapp",
   "version": "0.1.0",
   "private": true,
@@ -12,9 +13,12 @@
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
-    "@prisma/client": "^6.17.1",
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
     "antd": "^5.27.4",
+    "dotenv": "^17.2.3",
     "next": "15.5.4",
+    "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
@@ -30,7 +34,7 @@
     "lint-staged": "^16.2.3",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
-    "prisma": "^6.17.1",
+    "prisma": "^7.0.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5"
